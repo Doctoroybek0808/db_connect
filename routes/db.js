@@ -1,3 +1,4 @@
+const {User, validate} = require('..//models/user')
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
@@ -6,6 +7,7 @@ const pool = new Pool({
   password: 'postgres',
   port: 5432,
 })
+
 const getUsers = (request, response) => {
   pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
     if (error) {
@@ -26,14 +28,14 @@ const getUserById = (request, response) => {
   })
 }
 
-const createUser = (request, response) => {
-  const { name, email } = request.body
+const createUser = (req, res) => {
+  const { name, email } = req.body
 
   pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, result) => {
     if (error) {
       throw error
     }
-    response.status(201).send(`User added with ID: ${result.insertId}`)
+    res.status(201).send(`User added with ID: ${result.insertId}`)
   })
 }
 
