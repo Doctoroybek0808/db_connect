@@ -3,13 +3,13 @@ const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
   host: '192.168.2.65',
-  database: 'nodejs_test',
+  database: 'node_test',
   password: 'postgres',
   port: 5432,
 })
 
 const getUsers = (request, response) => {
-  pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM users_table ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -20,7 +20,7 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM users_table WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -29,23 +29,25 @@ const getUserById = (request, response) => {
 }
 
 const createUser = (req, res) => {
-  const { name, email } = req.body
+  console.log(req.body)
+  const { username, email, password } = req.body
 
-  pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, result) => {
+  pool.query('INSERT INTO users_table (username, email, password) VALUES ($1, $2, $3)  Returning id;', [username, email, password], (error, result) => {
     if (error) {
       throw error
     }
-    res.status(201).send(`User added with ID: ${result.insertId}`)
+    console.log(result.rows[0].id)
+    res.status(201).send(`User added with ID: ${result.rows[0].id}`)
   })
 }
 
 const updateUser = (request, response) => {
   const id = parseInt(request.params.id)
-  const { name, email } = request.body
+  const { username, email } = request.body
 
   pool.query(
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-    [name, email, id],
+    'UPDATE users_table SET username = $1, email = $2 WHERE id = $3',
+    [username, email, id],
     (error, results) => {
       if (error) {
         throw error
