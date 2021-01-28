@@ -3,7 +3,7 @@ const {generateAuthToken} = require('../models/user');
 const express = require('express');
 const router = express.Router();
 const db = require('./db')
-
+ 
 router.post('/', async (req, res) => {
   let user;
   const { error } = validate(req.body); 
