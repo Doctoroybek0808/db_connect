@@ -1,14 +1,15 @@
 const {generateAuthToken, validate} = require('..//models/user')
 const _ = require('lodash');
 
-const Pool = require('pg').Pool
-const pool = new Pool({
-  user: 'postgres',
+const Pool = require('pg').Pool;
+const conn   = {
   host: '192.168.2.65',
+  user: 'postgres',  
   database: 'node_test',
-  password: 'postgres',
   port: 5432,
-})
+  password: 'postgres123',  
+}
+const pool = new Pool(conn);
 
 const getUsers = async (request, response) => {  
   await pool.query('SELECT * FROM users_table ORDER BY id ASC', (error, results) => {

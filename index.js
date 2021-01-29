@@ -9,7 +9,7 @@ const auth = require('./routes/auth')
 const {User, validate} = require('./models/user')
 const port = 3001
 
-console.log('NODE_CONFIG_DIR: ',process.env.jwtPrivateKey);
+console.log('NODE_CONFIG_DIR: ',config.get('jwtPrivateKey'));
 if(!process.env.jwtPrivateKey){
   console.error('FATAL ERROR: jwtPrivateKey is not defined');
   process.exit(1);
