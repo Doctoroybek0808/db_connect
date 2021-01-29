@@ -20,5 +20,6 @@ module.exports = {
         minlegth: 5,
         maxlength: 1024
       },
+      admin: Boolean
     }
 };
