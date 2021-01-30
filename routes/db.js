@@ -7,28 +7,45 @@ const conn   = {
   user: 'postgres',  
   database: 'node_test',
   port: 5432,
-  password: 'postgres123',  
+  password: 'postgres',  
 }
 const pool = new Pool(conn);
 
-const getUsers = async (request, response) => {  
+const getUsers = async (req, res) => {  
   await pool.query('SELECT * FROM users_table ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error
     }
-    response.status(200).json(results.rows)
+    res.status(200).json(results.rows)
   })
 }
 
-const getUserById = (request, response) => {
-  const id = parseInt(request.params.id)
+const getUserById = (req, res) => {
+  const id = parseInt(req.params.id)
 
   pool.query('SELECT * FROM users_table WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
-    if(results.rows.length ===0 ) return response.status(404).json({status: 404, message:"User not found"})
-    response.status(200).json(results.rows)
+    if(results.rows.length === 0 ) return res.status(404).json({status: 404, message:"User not found"})
+    res.status(200).json(results.rows)
+  })
+}
+
+const getLogin = (req, res) => {
+  user = _.pick(req.body, ['email', 'password']);
+  console.log(user)
+  pool.query('SELECT id FROM users_table WHERE email = $1 and password=$2', [user.email, user.password], (error, results) => {
+    if (error) {
+      throw error
+    }
+    if(results.rows.length === 0 ) return response.status(404).json({status: 404, message:"User not found"})
+    user.id = results.rows[0].id;
+    const token = generateAuthToken(user);
+    res.header('x-auth-token', token);
+
+
+    res.status(200).send("User signed in")
   })
 }
 async function getUserByEmail(email, callback) {
@@ -100,4 +117,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getLogin
 }

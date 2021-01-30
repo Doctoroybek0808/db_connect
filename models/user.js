@@ -11,7 +11,8 @@ function validateUser(user){
 }
 
 generateAuthToken = function(user){
-    const token = jwt.sign({_id: user.id, isAdmin: user.admin }, 'mySecureKey');
+    console.log(process.env.jwtPrivateKey)
+    const token = jwt.sign({_id: user.id, isAdmin: user.admin }, process.env.jwtPrivateKey);
     return token;
 }
 exports.generateAuthToken = generateAuthToken;

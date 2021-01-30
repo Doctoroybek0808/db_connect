@@ -1,4 +1,3 @@
-const config = require('config')
 require("dotenv").config();
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -9,7 +8,7 @@ const auth = require('./routes/auth')
 const {User, validate} = require('./models/user')
 const port = 3001
 
-console.log('NODE_CONFIG_DIR: ',config.get('jwtPrivateKey'));
+console.log('NODE_CONFIG_DIR: ',process.env.jwtPrivateKey);
 if(!process.env.jwtPrivateKey){
   console.error('FATAL ERROR: jwtPrivateKey is not defined');
   process.exit(1);
