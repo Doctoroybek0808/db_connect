@@ -12,7 +12,9 @@ function validateUser(user){
 
 generateAuthToken = function(user){
     console.log(process.env.jwtPrivateKey)
-    const token = jwt.sign({_id: user.id, isAdmin: user.admin }, process.env.jwtPrivateKey);
+    const token = jwt.sign({_id: user.id, isAdmin: user.admin }, process.env.jwtPrivateKey, {
+        expiresIn: "60s"
+    });
     return token;
 }
 exports.generateAuthToken = generateAuthToken;

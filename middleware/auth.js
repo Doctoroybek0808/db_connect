@@ -9,7 +9,6 @@ module.exports  = function (req, res, next){
     {
         const decoded = jwt.verify(token, 'mySecureKey');
         req.user = decoded;
-        console.log("Hellow")
         next();
         
     }
