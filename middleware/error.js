@@ -1,3 +1,6 @@
+const winston = require('winston');
+
 module.exports = function (err, req, res, next){
-    res.status(500).json(err)
+    winston.error(err.message, err);
+    res.status(500).json(err);
 }

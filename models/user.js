@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const config = require('config')
 const jwt = require('jsonwebtoken');
 function validateUser(user){
     const schema = {
@@ -11,7 +10,6 @@ function validateUser(user){
 }
 
 generateAuthToken = function(user){
-    console.log(process.env.jwtPrivateKey)
     const token = jwt.sign({_id: user.id, isAdmin: user.admin }, process.env.jwtPrivateKey, {
         expiresIn: "60s"
     });
